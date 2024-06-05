@@ -104,7 +104,6 @@
         <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
       </symbol>
     </svg>
-
     <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
       <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center"
               id="bd-theme"
@@ -167,7 +166,21 @@
     <?php
     include('../config/config.php'); // Ensure the semicolon is present
     // Assuming you have a valid database connection in $db
-    $sql = "SELECT nama, email, umur, jurusan, sosmed, alamat FROM tbsiswa";
+    if (isset($_GET['delete_id'])) {
+      $id = $_GET['delete_id'];
+      $sql = "DELETE FROM tbsiswa WHERE id = ?";
+      $stmt = $conn->prepare($sql);
+      $stmt->bind_param('i', $id);
+  
+      if ($stmt->execute()) {
+          echo "<script>alert('Record deleted successfully');</script>";
+      } else {
+          echo "Error deleting record: " . $conn->error;
+      }
+  
+      $stmt->close();
+  }
+    $sql = "SELECT id, nama, email, umur, jurusan, sosmed, alamat FROM tbsiswa";
     $result = $conn->query($sql);
     ?>
     <div class="container text-center">
@@ -175,7 +188,7 @@
             <div class="col">
                 <div class="card">
                 <div class="card-header d-flex justify-content-start align-items-center">
-                        <span>Data Siswa SMK Negeri 1 Probolinggo</span>  <a href="tambah.php" class="btn btn-primary">Tambah</a>
+                        <span style="font-weight:bold;">Data Siswa SMK Negeri 1 Probolinggo</span> <a href="tambah.php" class="btn btn-primary">Tambah</a>
                     </div>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">
@@ -189,6 +202,7 @@
                             <th scope="col">Jurusan</th>
                             <th scope="col">Instagram</th>
                             <th scope="col">Alamat</th>
+                            <th scope="col">Operasi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -203,6 +217,14 @@
                                     <td><?= htmlspecialchars($row['jurusan']) ?></td>
                                     <td><?= htmlspecialchars($row['sosmed']) ?></td>
                                     <td><?= htmlspecialchars($row['alamat']) ?></td>
+                                    <td>
+                                        <a href="?delete_id=<?= $row['id'] ?>" onclick="return confirm('Are you sure you want to delete this record?')">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                                                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                                            </svg>
+                                        </a>
+                                    </td>
                                 </tr>
                             <?php endwhile; ?>
                         <?php else: ?>
@@ -216,9 +238,11 @@
                     </ul>                    
                 </div>
                 </div>
+        
         </div>
     </div>
     </main>
+   
    <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
