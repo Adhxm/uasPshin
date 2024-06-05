@@ -5,23 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>data</title>
-
-
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/carousel/">
-
-    
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
     <!-- css -->
     <link rel="stylesheet" href="../assets/dist/css/bootstrap.min.css">
-
-
-
-
-
-
-
-
     <style>
       .bd-placeholder-img {
         font-size: 1.125rem;
@@ -187,8 +174,8 @@
         <div class="row align-items-center">
             <div class="col">
                 <div class="card">
-                <div class="card-header">
-                        Data Siswa SMK Negeri 1 Probolinggo  <a href="tambah.php" class="btn btn-primary">Tambah</a>
+                <div class="card-header d-flex justify-content-start align-items-center">
+                        <span>Data Siswa SMK Negeri 1 Probolinggo</span>  <a href="tambah.php" class="btn btn-primary">Tambah</a>
                     </div>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">
@@ -229,11 +216,9 @@
                     </ul>                    
                 </div>
                 </div>
-        
         </div>
     </div>
     </main>
-   
    <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
